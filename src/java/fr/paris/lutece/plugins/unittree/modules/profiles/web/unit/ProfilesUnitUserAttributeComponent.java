@@ -33,47 +33,78 @@
  */
 package fr.paris.lutece.plugins.unittree.modules.profiles.web.unit;
 
+import fr.paris.lutece.plugins.profiles.service.ProfilesPlugin;
+import fr.paris.lutece.plugins.unittree.web.unit.IUnitUserAttributeComponent;
+import fr.paris.lutece.portal.business.user.attribute.IAttribute;
+import fr.paris.lutece.portal.service.user.attribute.AdminUserFieldService;
+import fr.paris.lutece.portal.service.user.attribute.AttributeService;
+
+import org.apache.commons.lang.StringUtils;
+
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import fr.paris.lutece.plugins.unittree.web.unit.IUnitUserAttributeComponent;
 
 /**
- * 
+ *
  *
  */
 public class ProfilesUnitUserAttributeComponent implements IUnitUserAttributeComponent
 {
-	private static final String NAME = "Profiles unit user attribute";
-	
-	// TEMPLATES
-	private static final String TEMPLATE_ATTRIBUTE_COMPONENT = "modules/profiles/profiles_unit_user_attribute.html";
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void fillModel( HttpServletRequest request, Map<String, Object> model )
-	{
-	}
+    private static final String NAME = "Profiles unit user attribute";
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getName()
-	{
-		return NAME;
-	}
+    // PARAMETERS
+    private static final String PARAMETER_ID_USER = "idUser";
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String getTemplate()
-	{
-		return TEMPLATE_ATTRIBUTE_COMPONENT;
-	}
+    // MARKS
+    private static final String MARK_MAP_LIST_ATTRIBUTE_DEFAULT_VALUES = "map_list_attribute_default_values";
+    private static final String MARK_ATTRIBUTES_LIST = "attributes_list";
+    private static final String MARK_LOCALE = "locale";
 
+    // TEMPLATES
+    private static final String TEMPLATE_ATTRIBUTE_COMPONENT = "modules/profiles/profiles_unit_user_attribute.html";
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void fillModel( HttpServletRequest request, Map<String, Object> model )
+    {
+        List<IAttribute> listAttributes = AttributeService.getInstance(  )
+                                                          .getPluginAttributesWithFields( ProfilesPlugin.PLUGIN_NAME,
+                request.getLocale(  ) );
+        String strIdUser = request.getParameter( PARAMETER_ID_USER );
+
+        if ( StringUtils.isNotBlank( strIdUser ) && StringUtils.isNumeric( strIdUser ) && ( listAttributes != null ) &&
+                !listAttributes.isEmpty(  ) )
+        {
+            int nIdUser = Integer.parseInt( strIdUser );
+            Map<String, Object> map = AdminUserFieldService.getAdminUserFields( listAttributes, nIdUser,
+                    request.getLocale(  ) );
+            model.put( MARK_MAP_LIST_ATTRIBUTE_DEFAULT_VALUES, map );
+        }
+
+        model.put( MARK_ATTRIBUTES_LIST, listAttributes );
+        model.put( MARK_LOCALE, request.getLocale(  ) );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getName(  )
+    {
+        return NAME;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getTemplate(  )
+    {
+        return TEMPLATE_ATTRIBUTE_COMPONENT;
+    }
 }

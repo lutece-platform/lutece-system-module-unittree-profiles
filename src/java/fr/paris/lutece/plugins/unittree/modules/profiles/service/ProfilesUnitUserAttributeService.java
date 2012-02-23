@@ -33,39 +33,74 @@
  */
 package fr.paris.lutece.plugins.unittree.modules.profiles.service;
 
+import fr.paris.lutece.plugins.profiles.business.Profile;
+import fr.paris.lutece.plugins.profiles.service.IProfilesService;
+import fr.paris.lutece.plugins.profiles.service.ProfilesPlugin;
+import fr.paris.lutece.plugins.unittree.service.unit.IUnitUserAttributeService;
+import fr.paris.lutece.portal.business.user.AdminUser;
+import fr.paris.lutece.portal.service.plugin.Plugin;
+import fr.paris.lutece.portal.service.plugin.PluginService;
+
+import javax.inject.Inject;
+
 import javax.servlet.http.HttpServletRequest;
 
-import fr.paris.lutece.plugins.unittree.service.unit.IUnitUserAttributeService;
 
 /**
- * 
+ *
  *
  */
 public class ProfilesUnitUserAttributeService implements IUnitUserAttributeService
 {
+    @Inject
+    private IProfilesService _profilesService;
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void doAddUser( int nIdUser, HttpServletRequest request )
-	{
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void doAddUser( int nIdUser, AdminUser currentUser, HttpServletRequest request )
+    {
+        Plugin pluginProfiles = PluginService.getPlugin( ProfilesPlugin.PLUGIN_NAME );
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void doModifyUser( int nIdUser, HttpServletRequest request )
-	{
-	}
+        // First unassign the profile from the user
+        Profile profile = _profilesService.findProfileByIdUser( nIdUser, pluginProfiles );
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void doRemoveUser( int nIdUser, HttpServletRequest request )
-	{
-	}
+        if ( profile != null )
+        {
+            _profilesService.doUnassignUserFromProfile( nIdUser, profile.getKey(  ), currentUser, request,
+                request.getLocale(  ), pluginProfiles );
+        }
 
+        _profilesService.doAssignUserToProfile( nIdUser, request, request.getLocale(  ) );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void doModifyUser( int nIdUser, AdminUser currentUser, HttpServletRequest request )
+    {
+        Plugin pluginProfiles = PluginService.getPlugin( ProfilesPlugin.PLUGIN_NAME );
+
+        // First unassign the profile from the user
+        Profile profile = _profilesService.findProfileByIdUser( nIdUser, pluginProfiles );
+
+        if ( profile != null )
+        {
+            _profilesService.doUnassignUserFromProfile( nIdUser, profile.getKey(  ), currentUser, request,
+                request.getLocale(  ), pluginProfiles );
+        }
+
+        _profilesService.doAssignUserToProfile( nIdUser, request, request.getLocale(  ) );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void doRemoveUser( int nIdUser, AdminUser currentUser, HttpServletRequest request )
+    {
+        // Nothing
+    }
 }

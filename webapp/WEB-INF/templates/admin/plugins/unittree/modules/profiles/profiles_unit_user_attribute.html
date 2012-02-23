@@ -1,3 +1,10 @@
-<p>
-	<label for="idProfile">#i18n{module.unittree.profiles.profilesUnitUserAttribute.labelProfile} * : </label>
-</p>
+<#if attributes_list?? && attributes_list?has_content>
+	<#list attributes_list as attribute>
+		<#if map_list_attribute_default_values?? && map_list_attribute_default_values?has_content>
+			<#assign idAttribute = "" + attribute.idAttribute>
+			${attribute.getHtmlFormAttribute( locale, map_list_attribute_default_values[idAttribute] )}
+		<#else>
+			${attribute.getHtmlFormAttribute( locale )}
+		</#if>
+	</#list>
+</#if>
