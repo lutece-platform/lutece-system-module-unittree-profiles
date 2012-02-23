@@ -50,7 +50,7 @@
 	<properties>
 		<componentName>unittree-profiles</componentName>
 		<jiraProjectName>UNITTREEPROFILES</jiraProjectName>
-		<jiraComponentId>10643</jiraComponentId>
+		<jiraComponentId>10650</jiraComponentId>
 	</properties>
 
     <scm>
