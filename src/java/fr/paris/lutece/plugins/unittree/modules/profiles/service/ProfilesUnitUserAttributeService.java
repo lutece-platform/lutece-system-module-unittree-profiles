@@ -48,6 +48,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  *
+ * ProfilesUnitUserAttributeService
  *
  */
 public class ProfilesUnitUserAttributeService implements IUnitUserAttributeService

@@ -38,7 +38,7 @@ import fr.paris.lutece.portal.service.plugin.PluginDefaultImplementation;
 
 /**
  *
- * MappingsPlugin
+ * UnitTreeProfilesPlugin
  *
  */
 public class UnitTreeProfilesPlugin extends PluginDefaultImplementation
