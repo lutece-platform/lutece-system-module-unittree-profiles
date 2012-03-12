@@ -2,7 +2,7 @@
     <!-- Plugin Informations -->
     <name>unittree-profiles</name>
     <class>fr.paris.lutece.plugins.unittree.modules.profiles.service.UnitTreeProfilesPlugin</class>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <documentation/>
     <installation/>
     <changes/>
