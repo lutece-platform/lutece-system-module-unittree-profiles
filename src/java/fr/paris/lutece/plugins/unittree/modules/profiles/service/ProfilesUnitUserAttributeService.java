@@ -95,11 +95,8 @@ public class ProfilesUnitUserAttributeService implements IUnitUserAttributeServi
         {
             if ( profile != null )
             {
-                if ( profile != null )
-                {
                     _profilesService.doUnassignUserFromProfile( nIdUser, profile.getKey( ), currentUser, request,
                             request.getLocale( ), pluginProfiles );
-                }
             }
         }
 
