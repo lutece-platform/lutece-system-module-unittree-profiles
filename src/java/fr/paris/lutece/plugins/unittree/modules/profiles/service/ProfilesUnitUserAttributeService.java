@@ -65,10 +65,11 @@ public class ProfilesUnitUserAttributeService implements IUnitUserAttributeServi
 
         // First unassign the profile from the user
         Profile profile = _profilesService.findProfileByIdUser( nIdUser, pluginProfiles );
-
-        _profilesService.doUnassignUserFromProfile( nIdUser, profile.getKey( ), currentUser, request,
+        if ( profile != null )
+        {
+            _profilesService.doUnassignUserFromProfile( nIdUser, profile.getKey( ), currentUser, request,
                 request.getLocale( ), pluginProfiles );
-
+        }
         _profilesService.doAssignUserToProfile( nIdUser, request, request.getLocale( ) );
     }
 
@@ -83,8 +84,11 @@ public class ProfilesUnitUserAttributeService implements IUnitUserAttributeServi
         // First unassign the profile from the user
         Profile profile = _profilesService.findProfileByIdUser( nIdUser, pluginProfiles );
 
-        _profilesService.doUnassignUserFromProfile( nIdUser, profile.getKey( ), currentUser, request,
-                request.getLocale( ), pluginProfiles );
+        if ( profile != null )
+        {
+            _profilesService.doUnassignUserFromProfile( nIdUser, profile.getKey( ), currentUser, request,
+                    request.getLocale( ), pluginProfiles );
+        }
 
         _profilesService.doAssignUserToProfile( nIdUser, request, request.getLocale( ) );
     }
