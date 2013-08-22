@@ -41,6 +41,8 @@ import fr.paris.lutece.portal.business.user.AdminUser;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
@@ -61,15 +63,15 @@ public class ProfilesUnitUserAttributeService implements IUnitUserAttributeServi
     @Override
     public void doAddUser( int nIdUser, AdminUser currentUser, HttpServletRequest request )
     {
-        Plugin pluginProfiles = PluginService.getPlugin( ProfilesPlugin.PLUGIN_NAME );
+        //        Plugin pluginProfiles = PluginService.getPlugin( ProfilesPlugin.PLUGIN_NAME );
 
         // First unassign the profile from the user
-        Profile profile = _profilesService.findProfileByIdUser( nIdUser, pluginProfiles );
-        if ( profile != null )
-        {
-            _profilesService.doUnassignUserFromProfile( nIdUser, profile.getKey( ), currentUser, request,
-                request.getLocale( ), pluginProfiles );
-        }
+        //        List<Profile> profile = _profilesService.findProfileByIdUser( nIdUser, pluginProfiles );
+        //        if ( profile != null )
+        //        {
+        //            _profilesService.doUnassignUserFromProfile( nIdUser, profile.getKey( ), currentUser, request,
+        //                request.getLocale( ), pluginProfiles );
+        //        }
         _profilesService.doAssignUserToProfile( nIdUser, request, request.getLocale( ) );
     }
 
@@ -81,15 +83,16 @@ public class ProfilesUnitUserAttributeService implements IUnitUserAttributeServi
     {
         Plugin pluginProfiles = PluginService.getPlugin( ProfilesPlugin.PLUGIN_NAME );
 
-        // First unassign the profile from the user
-        Profile profile = _profilesService.findProfileByIdUser( nIdUser, pluginProfiles );
-
-        if ( profile != null )
+        // First unassigns profiles from the user
+        List<Profile> listProfiles = _profilesService.findProfileByIdUser( nIdUser, pluginProfiles );
+        if ( listProfiles != null && listProfiles.size( ) > 0 )
         {
-            _profilesService.doUnassignUserFromProfile( nIdUser, profile.getKey( ), currentUser, request,
-                    request.getLocale( ), pluginProfiles );
+            for ( Profile profile : listProfiles )
+            {
+                _profilesService.doUnassignUserFromProfile( nIdUser, profile.getKey( ), currentUser, request,
+                        request.getLocale( ), pluginProfiles );
+            }
         }
-
         _profilesService.doAssignUserToProfile( nIdUser, request, request.getLocale( ) );
     }
 
