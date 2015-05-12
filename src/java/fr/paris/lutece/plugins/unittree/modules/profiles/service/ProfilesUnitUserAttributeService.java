@@ -44,13 +44,14 @@ import fr.paris.lutece.portal.service.plugin.PluginService;
 import java.util.List;
 
 import javax.inject.Inject;
+
 import javax.servlet.http.HttpServletRequest;
 
 
 /**
- * 
+ *
  * ProfilesUnitUserAttributeService
- * 
+ *
  */
 public class ProfilesUnitUserAttributeService implements IUnitUserAttributeService
 {
@@ -72,7 +73,7 @@ public class ProfilesUnitUserAttributeService implements IUnitUserAttributeServi
         //            _profilesService.doUnassignUserFromProfile( nIdUser, profile.getKey( ), currentUser, request,
         //                request.getLocale( ), pluginProfiles );
         //        }
-        _profilesService.doAssignUserToProfile( nIdUser, request, request.getLocale( ) );
+        _profilesService.doAssignUserToProfile( nIdUser, request, request.getLocale(  ) );
     }
 
     /**
@@ -85,15 +86,17 @@ public class ProfilesUnitUserAttributeService implements IUnitUserAttributeServi
 
         // First unassigns profiles from the user
         List<Profile> listProfiles = _profilesService.findProfileByIdUser( nIdUser, pluginProfiles );
-        if ( listProfiles != null && listProfiles.size( ) > 0 )
+
+        if ( ( listProfiles != null ) && ( listProfiles.size(  ) > 0 ) )
         {
             for ( Profile profile : listProfiles )
             {
-                _profilesService.doUnassignUserFromProfile( nIdUser, profile.getKey( ), currentUser, request,
-                        request.getLocale( ), pluginProfiles );
+                _profilesService.doUnassignUserFromProfile( nIdUser, profile.getKey(  ), currentUser, request,
+                    request.getLocale(  ), pluginProfiles );
             }
         }
-        _profilesService.doAssignUserToProfile( nIdUser, request, request.getLocale( ) );
+
+        _profilesService.doAssignUserToProfile( nIdUser, request, request.getLocale(  ) );
     }
 
     /**
