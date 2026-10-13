@@ -34,17 +34,21 @@
 package fr.paris.lutece.plugins.unittree.modules.profiles.web.unit;
 
 import fr.paris.lutece.plugins.profiles.service.ProfilesPlugin;
+import fr.paris.lutece.plugins.unittree.modules.profiles.service.ProfilesUnitUserAttributeService;
 import fr.paris.lutece.plugins.unittree.web.unit.IUnitUserAttributeComponent;
 import fr.paris.lutece.portal.business.user.attribute.IAttribute;
+import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.user.attribute.AdminUserFieldService;
 import fr.paris.lutece.portal.service.user.attribute.AttributeService;
 
-import org.apache.commons.lang.StringUtils;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -52,6 +56,7 @@ import javax.servlet.http.HttpServletRequest;
  * ProfilesUnitUserAttributeComponent
  *
  */
+@ApplicationScoped
 public class ProfilesUnitUserAttributeComponent implements IUnitUserAttributeComponent
 {
     private static final String NAME = "Profiles unit user attribute";
@@ -67,15 +72,21 @@ public class ProfilesUnitUserAttributeComponent implements IUnitUserAttributeCom
     // TEMPLATES
     private static final String TEMPLATE_ATTRIBUTE_COMPONENT = "modules/profiles/profiles_unit_user_attribute.html";
 
+    @Inject
+    private AttributeService _attributeService;
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void fillModel( HttpServletRequest request, Map<String, Object> model )
     {
-        List<IAttribute> listAttributes = AttributeService.getInstance(  )
-                                                          .getPluginAttributesWithFields( ProfilesPlugin.PLUGIN_NAME,
-                request.getLocale(  ) );
+        if ( !PluginService.isPluginEnable( ProfilesUnitUserAttributeService.PLUGIN_NAME ) )
+        {
+            return;
+        }
+
+        List<IAttribute> listAttributes = _attributeService.getPluginAttributesWithFields( ProfilesPlugin.PLUGIN_NAME, request.getLocale(  ) );
         String strIdUser = request.getParameter( PARAMETER_ID_USER );
 
         if ( StringUtils.isNotBlank( strIdUser ) && StringUtils.isNumeric( strIdUser ) && ( listAttributes != null ) &&
